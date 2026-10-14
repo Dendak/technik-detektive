@@ -38,29 +38,111 @@
   .knoepfe { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .8rem; }
   [hidden] { display: none !important; }
 
-  /* ---------- nachgebaute Fenster (nur zur Übung) ---------- */
-  .buehne { background: #3b6ea8; background: linear-gradient(135deg, #2b5a8f, #5b8fc7); border-radius: 12px; padding: 1.5rem 1rem; min-height: 15rem; display: grid; place-items: center; }
-  .fenster { width: min(100%, 30rem); background: #fff; color: #1b1b1b; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,.35); overflow: hidden; font-family: "Segoe UI", system-ui, sans-serif; font-size: 15px; }
-  .fenster .kopf { background: #f3f3f3; padding: .45rem .75rem; display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid #ddd; }
-  .fenster .inhalt { padding: 1rem 1.1rem; display: flex; gap: .8rem; }
-  .fenster .symbol { font-size: 2rem; line-height: 1; }
-  .fenster .fuss { padding: .6rem 1rem; background: #f7f7f7; display: flex; justify-content: flex-end; gap: .5rem; }
-  .fenster .fuss span { border: 1px solid #b8b8b8; background: #fff; border-radius: 4px; padding: .2rem .9rem; font-size: 14px; }
-  .fenster .fuss span.haupt { background: #0067c0; color: #fff; border-color: #0067c0; }
-  .browser { width: min(100%, 34rem); background: #fff; color: #1b1b1b; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.35); font-family: system-ui, sans-serif; }
-  .browser .leiste { background: #dfe3e8; padding: .4rem .6rem; font-size: 13px; display: flex; gap: .5rem; align-items: center; }
-  .browser .adresse { flex: 1; background: #fff; border-radius: 999px; padding: .15rem .7rem; color: #444; }
-  .browser .seite { padding: 1.2rem; }
-  .alarm { background: #c4141c; color: #fff; text-align: center; }
-  .alarm strong { font-size: 1.25rem; display: block; margin-bottom: .4rem; }
-  .alarm .nummer { font-size: 1.4rem; font-weight: 800; background: #fff; color: #c4141c; display: inline-block; padding: .2rem .8rem; border-radius: 6px; margin: .5rem 0; }
-  .gewinn { background: linear-gradient(135deg, #ffd54a, #ff8a00); color: #3a2200; text-align: center; }
-  .gewinn strong { font-size: 1.4rem; display: block; }
-  .toast { width: min(100%, 22rem); background: #2b2b2b; color: #fff; border-radius: 8px; padding: .9rem 1rem; box-shadow: 0 10px 30px rgba(0,0,0,.35); font-family: "Segoe UI", system-ui, sans-serif; font-size: 14px; justify-self: end; align-self: end; }
-  .anmeldung { width: min(100%, 22rem); background: rgba(20,30,50,.75); color: #fff; border-radius: 12px; padding: 1.3rem; text-align: center; font-family: "Segoe UI", system-ui, sans-serif; }
-  .anmeldung .feld { background: #fff; color: #333; border-radius: 4px; padding: .35rem .6rem; margin: .7rem 0 .4rem; text-align: left; letter-spacing: .2em; }
-  .uebung-stempel { position: absolute; top: .3rem; right: .5rem; font-size: 11px; background: rgba(0,0,0,.55); color: #fff; padding: .1rem .45rem; border-radius: 4px; }
-  .buehne { position: relative; }
+  /* ---------- nachgebaute Windows-11-Ansichten (nur zur Übung) ---------- */
+  #echt-buehne { position: relative; overflow: hidden; border-radius: 10px; background: #0b2a6b; }
+  #echt-buehne > div { position: absolute; top: 0; left: 0; width: 960px; height: 540px; transform-origin: 0 0; }
+  .w11-desktop {
+    overflow: hidden; font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif; font-size: 14px; color: #1b1b1b; line-height: 1.4;
+    background:
+      radial-gradient(30% 45% at 63% 57%, rgba(225, 242, 255, .95) 0%, rgba(140, 200, 255, .55) 40%, transparent 72%),
+      radial-gradient(55% 75% at 72% 66%, #4d9cff 0%, transparent 62%),
+      radial-gradient(65% 85% at 28% 30%, #1f5fd1 0%, transparent 70%),
+      linear-gradient(135deg, #0b2a6b 0%, #1546b0 45%, #0d3486 75%, #081d4f 100%);
+  }
+  .w11-flaeche { position: absolute; inset: 0 0 48px 0; }
+  .w11-symbole { position: absolute; top: 10px; left: 8px; color: #fff; font-size: 12px; text-align: center; text-shadow: 0 1px 3px rgba(0,0,0,.7); }
+  .w11-symbole div { width: 76px; margin-bottom: 16px; }
+  .w11-symbole span { font-size: 30px; display: block; text-shadow: none; }
+  .w11-oben { position: absolute; inset: 0; display: grid; place-items: center; z-index: 3; }
+  .w11-fenster { max-width: 92%; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 18px 50px rgba(0,0,0,.42), 0 0 0 1px rgba(0,0,0,.12); }
+  .w11-titel { height: 32px; display: flex; align-items: center; gap: 8px; padding-left: 12px; font-size: 12px; }
+  .w11-ctrl { margin-left: auto; display: flex; align-self: stretch; }
+  .w11-ctrl i { width: 46px; display: grid; place-items: center; font-style: normal; color: #1b1b1b; }
+  .w11-koerper { display: flex; gap: 14px; padding: 8px 24px 22px; font-size: 14px; }
+  .w11-koerper svg { flex: none; }
+  .w11-haupt { color: #1e3287; font-size: 16px; margin-bottom: 6px; }
+  .w11-link { color: #0b5cad; margin-top: 6px; padding: 6px 10px; border-radius: 4px; font-size: 15px; }
+  .w11-link:first-of-type { margin-top: 14px; background: #f0f6fd; }
+  .w11-fuss { background: #f3f3f3; border-top: 1px solid #e5e5e5; padding: 16px 24px; display: flex; justify-content: flex-end; gap: 8px; }
+  .w11-btn { min-width: 96px; height: 32px; padding: 0 12px; display: inline-grid; place-items: center; border-radius: 4px; font-size: 14px;
+    background: #fdfdfd; border: 1px solid #d1d1d1; border-bottom-color: #b9b9b9; color: #1b1b1b; }
+  .w11-btn.akzent { background: #005fb8; border-color: #005fb8; border-bottom-color: #00418a; color: #fff; }
+  .w11-taskleiste { position: absolute; left: 0; right: 0; bottom: 0; height: 48px; display: flex; align-items: center; z-index: 6;
+    background: rgba(238, 242, 249, .9); backdrop-filter: blur(24px); border-top: 1px solid rgba(255,255,255,.5); }
+  .w11-mitte { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 2px; }
+  .w11-mitte > svg { box-sizing: content-box; padding: 8px; border-radius: 4px; }
+  .w11-mitte > svg:first-child { background: rgba(255,255,255,.65); }
+  .w11-suche { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #dcdcdc; border-radius: 999px; padding: 6px 14px; min-width: 150px; font-size: 13px; color: #616161; margin: 0 4px; }
+  .w11-tray { margin-left: auto; display: flex; align-items: center; gap: 10px; padding-right: 14px; font-size: 12px; color: #1b1b1b; }
+  .w11-zeit { text-align: right; line-height: 1.3; }
+  .w11-app { position: absolute; inset: 3% 6% 3% 9%; background: #fff; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column;
+    box-shadow: 0 14px 44px rgba(0,0,0,.4), 0 0 0 1px rgba(0,0,0,.1); }
+  .w11-app-titel { height: 36px; flex: none; display: flex; align-items: center; gap: 10px; padding-left: 12px; font-size: 12px; background: #f3f3f3; }
+  .w11-app-suche { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 3px 12px; color: #707070; min-width: 220px; margin-left: 50px; }
+  .w11-logo { width: 18px; height: 18px; flex: none; border-radius: 4px; display: grid; place-items: center; color: #fff; font: 700 11px/1 "Segoe UI", sans-serif; }
+  .w11-ribbon { flex: none; display: flex; gap: 16px; padding: 4px 14px 6px; font-size: 12.5px; background: #f3f3f3; }
+  .w11-ribbon u { text-decoration: none; border-bottom: 2px solid #185abd; color: #185abd; }
+  .w11-band { flex: none; height: 62px; margin: 0 8px 6px; background: #fff; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,.14);
+    display: flex; gap: 18px; align-items: center; padding: 0 14px; color: #444; font-size: 12px; }
+  .w11-band b { font-weight: 400; border: 1px solid #ccc; padding: 2px 8px; border-radius: 3px; color: #222; }
+  .w11-dok { flex: 1; background: #e9e9e9; display: grid; justify-items: center; padding-top: 14px; overflow: hidden; }
+  .w11-blatt { width: 62%; height: 130%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.2); padding: 30px 40px; font-family: Aptos, Calibri, sans-serif; font-size: 12px; color: #222; }
+  .w11-blatt h4 { font-size: 20px; margin: 0 0 10px; color: #1f3864; font-weight: 400; }
+  .w11-nebel { position: absolute; inset: 36px 0 0; background: rgba(255,255,255,.62); }
+  .w11-tabs { height: 40px; flex: none; display: flex; align-items: flex-end; gap: 4px; padding-left: 8px; background: #e6e9ed; }
+  .w11-tab { height: 32px; width: 240px; background: #fff; border-radius: 8px 8px 0 0; display: flex; align-items: center; gap: 8px; padding: 0 10px; font-size: 12px; white-space: nowrap; overflow: hidden; }
+  .w11-tab > span { overflow: hidden; text-overflow: ellipsis; }
+  .w11-tab i { margin-left: auto; display: grid; flex: none; }
+  .w11-plus { align-self: center; padding: 0 8px; font-size: 18px; color: #444; }
+  .w11-tabs .w11-ctrl { height: 32px; align-self: flex-start; }
+  .w11-leiste { height: 40px; flex: none; display: flex; align-items: center; gap: 14px; padding: 0 12px; border-bottom: 1px solid #e5e5e5; color: #555; font-size: 15px; }
+  .w11-adresse { flex: 1; height: 30px; display: flex; align-items: center; gap: 8px; padding: 0 14px; border-radius: 999px; background: #f1f3f4; font-size: 13px; color: #1b1b1b; white-space: nowrap; overflow: hidden; }
+  .w11-adresse .unsicher { color: #c42b1c; font-weight: 600; }
+  .w11-adresse .grau { color: #6b6b6b; }
+  .w11-web { flex: 1; position: relative; overflow: hidden; }
+  .s-scare { position: absolute; inset: 0; background: #0b55c4; color: #fff; display: grid; place-items: center; }
+  .s-scare-kopf { position: absolute; top: 0; left: 0; right: 0; padding: 8px 14px; background: #08408f; font-size: 13px; }
+  .s-scare-box { width: 70%; background: #fff; color: #1b1b1b; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,.45); overflow: hidden; text-align: center; margin-top: 20px; }
+  .s-scare-box h5 { margin: 0; background: #c42b1c; color: #fff; padding: 8px; font-size: 15px; }
+  .s-scare-box p { margin: 6px 14px; font-size: 13px; }
+  .s-nummer { font-size: 22px; font-weight: 800; color: #c42b1c; margin: 2px 0; }
+  .s-knoepfe { display: flex; justify-content: flex-end; gap: 8px; padding: 10px 14px; background: #f3f3f3; }
+  .s-gewinn { position: absolute; inset: 0; background: radial-gradient(circle at 50% 30%, #fff3b0, #ffb300 55%, #ff6f00); display: grid; place-items: center; text-align: center; color: #3a1f00; }
+  .s-gewinn h5 { font-size: 26px; margin: 0 0 6px; }
+  .s-button { display: inline-block; margin-top: 12px; background: #1fa53b; color: #fff; font-weight: 800; padding: 10px 22px; border-radius: 999px; box-shadow: 0 4px 0 #137a29; }
+  .s-video { position: absolute; inset: 0; background: #111; color: #eee; display: grid; place-items: center; }
+  .s-film { position: absolute; inset: 8% 12% 18%; border-radius: 6px; background: linear-gradient(135deg, #2b3a55, #6b4b3a, #1d2b3a); filter: blur(2px); }
+  .s-dialog { position: relative; width: 58%; background: #f7f7f7; color: #1b1b1b; border-radius: 8px; padding: 14px 16px; box-shadow: 0 10px 30px rgba(0,0,0,.6); font-size: 13px; }
+  .s-dialog b { display: block; font-size: 15px; margin-bottom: 6px; }
+  .s-gruen { display: inline-block; margin-top: 10px; background: #1fa53b; color: #fff; font-weight: 700; padding: 7px 14px; border-radius: 4px; }
+  .w11-ol { flex: 1; display: flex; min-height: 0; }
+  .w11-ol-rail { width: 48px; flex: none; background: #f0f0f0; display: flex; flex-direction: column; align-items: center; gap: 18px; padding-top: 14px; color: #555; font-size: 16px; }
+  .w11-ol-liste { width: 30%; flex: none; border-right: 1px solid #e5e5e5; font-size: 12px; }
+  .w11-ol-liste div { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; }
+  .w11-ol-liste div.aktiv { background: #cfe4fa; }
+  .w11-ol-liste span { color: #555; }
+  .w11-ol-mail { flex: 1; padding: 14px 18px; font-size: 13px; overflow: hidden; }
+  .w11-ol-betreff { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+  .w11-ol-hinweis { background: #fff4ce; border: 1px solid #f2d27a; padding: 5px 10px; border-radius: 4px; font-size: 12px; margin-bottom: 10px; }
+  .w11-ol-von { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+  .w11-avatar { width: 36px; height: 36px; flex: none; border-radius: 50%; background: #ca5010; color: #fff; display: grid; place-items: center; font-weight: 600; }
+  .w11-ol-von small { color: #616161; }
+  .w11-ol-knopf { display: inline-block; background: #0f6cbd; color: #fff; padding: 7px 16px; border-radius: 4px; margin-top: 10px; }
+  .w11-toast { position: absolute; right: 12px; bottom: 60px; width: 360px; background: #f9f9f9; border: 1px solid rgba(0,0,0,.08); border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.3); padding: 12px 14px; font-size: 13px; z-index: 5; }
+  .w11-toast-kopf { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #444; margin-bottom: 8px; }
+  .w11-toast-kopf em { margin-left: auto; font-style: normal; color: #666; letter-spacing: .3em; }
+  .w11-toast b { display: block; font-size: 14px; margin-bottom: 2px; }
+  .w11-toast-knoepfe { display: flex; gap: 8px; margin-top: 12px; }
+  .w11-toast-knoepfe .w11-btn { flex: 1; }
+  .w11-sperre { color: #fff; display: grid; place-items: center; text-align: center; }
+  .w11-sperre::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.3); backdrop-filter: blur(4px); }
+  .w11-login { position: relative; display: grid; justify-items: center; gap: 12px; }
+  .w11-name { font-size: 26px; font-weight: 600; }
+  .w11-glas { min-width: 110px; padding: 6px 16px; border-radius: 4px; background: rgba(255,255,255,.22); border: 1px solid rgba(255,255,255,.35); }
+  .w11-caps { margin-top: 4px; background: #fff; color: #1b1b1b; font-size: 12px; padding: 6px 10px; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,.3); }
+  .w11-sperre-icons { position: absolute; right: 18px; bottom: 16px; display: flex; gap: 16px; color: #fff; }
+  .uebung-stempel { position: absolute; left: 10px; bottom: 13px; z-index: 9; font-size: 11px; background: rgba(0,0,0,.62); color: #fff; padding: 3px 8px; border-radius: 4px; }
 
   /* ---------- Alarm-Training ---------- */
   #alarmflaeche { position: fixed; inset: 0; z-index: 50; background: #b00010; color: #fff; display: flex; flex-direction: column; font-family: system-ui, sans-serif; }
@@ -118,7 +200,7 @@
     </div>
     <div class="karte">
       <p class="fortschritt" id="echt-nr"></p>
-      <div class="buehne" id="echt-buehne"></div>
+      <div id="echt-buehne"></div>
       <div class="knoepfe" id="echt-knoepfe">
         <button type="button" data-wahl="echt">✅ Echt</button>
         <button type="button" data-wahl="fake">🚩 Fake</button>
@@ -215,76 +297,159 @@
   reiter.forEach((r) => r.addEventListener('click', () => {
     reiter.forEach((x) => x.setAttribute('aria-selected', x === r));
     for (const t of ['echt', 'alarm', 'faelle', 'ticket']) document.getElementById('teil-' + t).hidden = t !== r.dataset.teil;
+    if (r.dataset.teil === 'echt') passeBuehneAn();
   }));
   const el = (html) => { const d = document.createElement('div'); d.innerHTML = html.trim(); return d.firstChild; };
   const rueck = (gut, html) => `<div class="rueckmeldung ${gut ? 'gut' : 'schlecht'}">${html}</div>`;
 
-  // ---------- 1 Echt oder Fake ----------
+  // ---------- 1 Echt oder Fake: nachgebaute Windows-11-Ansichten (nur zur Übung) ----------
+  const ICON = {
+    warn: '<svg viewBox="0 0 32 32" width="32" height="32"><path d="M16 3.5 29.5 27.5h-27z" fill="#f8c400" stroke="#d6a300" stroke-linejoin="round"/><rect x="14.8" y="11" width="2.4" height="9.5" rx="1.2" fill="#1b1b1b"/><circle cx="16" cy="23.7" r="1.5" fill="#1b1b1b"/></svg>',
+    min: '<svg width="10" height="10" viewBox="0 0 10 10"><path d="M0 5.5h10" stroke="currentColor"/></svg>',
+    max: '<svg width="10" height="10" viewBox="0 0 10 10"><rect x=".5" y=".5" width="9" height="9" rx="1.5" fill="none" stroke="currentColor"/></svg>',
+    zu: '<svg width="10" height="10" viewBox="0 0 10 10"><path d="M.5.5l9 9m0-9-9 9" stroke="currentColor"/></svg>',
+    start: '<svg viewBox="0 0 24 24" width="24" height="24"><defs><linearGradient id="w11s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3ccbf4"/><stop offset="1" stop-color="#0a64d8"/></linearGradient></defs><path fill="url(#w11s)" d="M2 2h9.5v9.5H2zM12.5 2H22v9.5h-9.5zM2 12.5h9.5V22H2zM12.5 12.5H22V22h-9.5z"/></svg>',
+    lupe: '<svg viewBox="0 0 16 16" width="14" height="14"><circle cx="6.5" cy="6.5" r="4.5" fill="none" stroke="#444" stroke-width="1.4"/><path d="M10 10l4.5 4.5" stroke="#444" stroke-width="1.4" stroke-linecap="round"/></svg>',
+    ordner: '<svg viewBox="0 0 24 24" width="24" height="24"><path d="M2 6.5A1.5 1.5 0 0 1 3.5 5H9l2 2h9.5A1.5 1.5 0 0 1 22 8.5V18a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18z" fill="#f5b81c"/><path d="M2 9h20v9a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18z" fill="#ffd25e"/></svg>',
+    edge: '<svg viewBox="0 0 24 24" width="24" height="24"><defs><linearGradient id="w11e" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0c59a4"/><stop offset=".55" stop-color="#1ba1e2"/><stop offset="1" stop-color="#5ee07a"/></linearGradient></defs><circle cx="12" cy="12" r="10" fill="url(#w11e)"/><path d="M7 13.5c0-3 2.4-5 5.4-5 2.8 0 4.6 1.7 4.6 3.6 0 1.3-1 2-2.3 2H10c.3 2 2.2 3.3 4.6 3.3 1.3 0 2.4-.3 3.4-.9-1.2 2.2-3.5 3.5-6 3.5C8.9 20 7 17 7 13.5z" fill="#fff" opacity=".9"/></svg>',
+    word: '<svg viewBox="0 0 24 24" width="24" height="24"><rect x="3" y="3" width="18" height="18" rx="4" fill="#185abd"/><path d="M7 8l1.6 8h1.3L12 10.6 14.1 16h1.3L17 8h-1.5l-1 5.6L12.6 8h-1.2l-1.9 5.6-1-5.6z" fill="#fff"/></svg>',
+    wlan: '<svg viewBox="0 0 16 16" width="16" height="16"><path d="M1.5 6.5a9.5 9.5 0 0 1 13 0M3.8 9a6.2 6.2 0 0 1 8.4 0M6 11.4a3 3 0 0 1 4 0" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="13.6" r="1" fill="currentColor"/></svg>',
+    ton: '<svg viewBox="0 0 16 16" width="16" height="16"><path d="M2 6h2.5L8 3v10L4.5 10H2z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M10.5 5.5a3.5 3.5 0 0 1 0 5M12.3 3.8a6 6 0 0 1 0 8.4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>',
+    akku: '<svg viewBox="0 0 20 16" width="20" height="16"><rect x="1" y="4" width="16" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="3" y="6" width="10" height="4" rx="1" fill="currentColor"/><rect x="17.6" y="6.5" width="1.6" height="3" rx=".6" fill="currentColor"/></svg>',
+    power: '<svg viewBox="0 0 16 16" width="18" height="18"><path d="M8 1.5v6M4.2 3.8a5.5 5.5 0 1 0 7.6 0" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',
+    update: '<svg viewBox="0 0 16 16" width="16" height="16"><path d="M13.5 8A5.5 5.5 0 1 1 11 3.4" fill="none" stroke="#0067c0" stroke-width="1.5" stroke-linecap="round"/><path d="M10 1.5l1.6 2.2L9.3 5" fill="none" stroke="#0067c0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  };
+  const CTRL3 = `<span class="w11-ctrl"><i>${ICON.min}</i><i>${ICON.max}</i><i>${ICON.zu}</i></span>`;
+  const STEMPEL = '<span class="uebung-stempel">🎓 Übung – nachgebaut</span>';
+  const WORD_LOGO = '<span class="w11-logo" style="background:#185abd">W</span>';
+  function uhr() {
+    const d = new Date(), z = (n) => String(n).padStart(2, '0');
+    return `${z(d.getHours())}:${z(d.getMinutes())}<br>${z(d.getDate())}.${z(d.getMonth() + 1)}.${d.getFullYear()}`;
+  }
+  function desktop(inhalt, extra = '') {
+    return `<div class="w11-desktop">${STEMPEL}
+      <div class="w11-flaeche"><div class="w11-symbole"><div><span>🗑️</span>Papierkorb</div><div><span>📁</span>Schule</div></div>${inhalt}</div>
+      ${extra}
+      <div class="w11-taskleiste"><div class="w11-mitte">${ICON.start}<span class="w11-suche">${ICON.lupe} Suche</span>${ICON.ordner}${ICON.edge}${ICON.word}</div>
+        <div class="w11-tray"><span>⌃</span>${ICON.wlan}${ICON.ton}${ICON.akku}<span class="w11-zeit">${uhr()}</span></div></div></div>`;
+  }
+  function dialog(o) {
+    const links = (o.links || []).map((l) => `<div class="w11-link">→&nbsp; ${l}</div>`).join('');
+    const fuss = o.knoepfe ? `<div class="w11-fuss">${o.knoepfe.map(([t, a]) => `<span class="w11-btn${a ? ' akzent' : ''}">${t}</span>`).join('')}</div>` : '';
+    return `<div class="w11-oben"><div class="w11-fenster" style="width:${o.breite || 430}px">
+      <div class="w11-titel">${o.logo || ''}<span>${o.titel}</span><span class="w11-ctrl"><i>${ICON.zu}</i></span></div>
+      <div class="w11-koerper">${o.symbol || ''}<div>${o.haupt ? `<div class="w11-haupt">${o.haupt}</div>` : ''}${o.text}${links}</div></div>${fuss}</div></div>`;
+  }
+  function word(titel, haengt) {
+    return `<div class="w11-app">
+      <div class="w11-app-titel">${WORD_LOGO}<span>${titel}</span><span class="w11-app-suche">🔍 Suchen</span>${CTRL3}</div>
+      <div class="w11-ribbon"><span>Datei</span><u>Start</u><span>Einfügen</span><span>Zeichnen</span><span>Entwurf</span><span>Layout</span><span>Referenzen</span><span>Sendungen</span><span>Überprüfen</span><span>Ansicht</span></div>
+      <div class="w11-band"><b>Aptos (Textkörper)</b><b>11</b><span><strong>F</strong>&nbsp; <em>K</em>&nbsp; <u>U</u></span><span>Standard · Kein Leerraum · Überschrift 1</span></div>
+      <div class="w11-dok"><div class="w11-blatt"><h4>Referat: Datenspeicher</h4><p>Eine Festplatte speichert Daten magnetisch auf schnell drehenden Scheiben. Eine SSD hat keine beweglichen Teile und ist deshalb schneller und robuster.</p><p>1956 stellte IBM die erste Festplatte vor. Sie war so groß wie ein Kleiderschrank …</p></div></div>
+      ${haengt ? '<div class="w11-nebel"></div>' : ''}</div>`;
+  }
+  function edge(o) {
+    const schloss = o.unsicher ? '<span class="unsicher">⚠ Nicht sicher</span>' : '🔒';
+    return `<div class="w11-app">
+      <div class="w11-tabs"><span class="w11-tab">${o.favicon}<span>${o.tab}</span><i>${ICON.zu}</i></span><span class="w11-plus">+</span>${CTRL3}</div>
+      <div class="w11-leiste"><span>←</span><span>→</span><span>⟳</span><span class="w11-adresse">${schloss}<span><span class="grau">${o.unsicher ? 'http://' : 'https://'}</span>${o.url}</span></span><span>☆</span><span>⋯</span></div>
+      <div class="w11-web">${o.seite}</div></div>`;
+  }
+  function outlook(o) {
+    return `<div class="w11-app">
+      <div class="w11-app-titel"><span class="w11-logo" style="background:#0f6cbd">O</span><span>Posteingang – Outlook</span><span class="w11-app-suche">🔍 Suchen</span>${CTRL3}</div>
+      <div class="w11-ol"><div class="w11-ol-rail"><span>✉</span><span>📅</span><span>👥</span><span>☑</span></div>
+        <div class="w11-ol-liste"><div class="aktiv"><b>${o.name}</b><br><span>${o.betreff}</span></div><div><b>Klassenvorstand</b><br><span>Wandertag am Freitag</span></div><div><b>Microsoft Teams</b><br><span>Neue Aufgabe in Informatik</span></div><div><b>Bibliothek</b><br><span>Rückgabe bis Montag</span></div></div>
+        <div class="w11-ol-mail"><div class="w11-ol-betreff">${o.betreff}</div>
+          <div class="w11-ol-hinweis">Sie erhalten nicht oft E-Mails von ${o.adresse}. <u>Erfahren Sie, warum dies wichtig ist</u></div>
+          <div class="w11-ol-von"><span class="w11-avatar">${o.kuerzel}</span><div><b>${o.name}</b> &lt;${o.adresse}&gt;<br><small>An: Sie · Heute, 07:12</small></div></div>${o.text}</div></div></div>`;
+  }
+  function anmeldung() {
+    return `<div class="w11-desktop w11-sperre">${STEMPEL}<div class="w11-login">
+      <svg viewBox="0 0 64 64" width="120" height="120"><circle cx="32" cy="32" r="32" fill="#e3e6ea"/><circle cx="32" cy="25" r="11" fill="#9aa0a8"/><path d="M12 53c3.5-10 11.5-15 20-15s16.5 5 20 15a31.8 31.8 0 0 1-40 0z" fill="#9aa0a8"/></svg>
+      <div class="w11-name">Schüler:in</div><div>Das Kennwort ist falsch. Versuchen Sie es erneut.</div><span class="w11-glas">OK</span>
+      <div class="w11-caps">⇪ Die Feststelltaste ist aktiviert.</div></div>
+      <div class="w11-sperre-icons">${ICON.wlan}${ICON.ton}${ICON.power}</div></div>`;
+  }
+  const TOAST = `<div class="w11-toast"><div class="w11-toast-kopf">${ICON.update}<span>Windows Update</span><em>⋯ ✕</em></div>
+    <b>Neustart erforderlich</b>Ihr Gerät muss neu gestartet werden, damit Updates installiert werden können.
+    <div class="w11-toast-knoepfe"><span class="w11-btn akzent">Jetzt neu starten</span><span class="w11-btn">Später</span></div></div>`;
+  const SCARE = `<div class="s-scare"><div class="s-scare-kopf">🛡 Windows-Sicherheit &nbsp;·&nbsp; Bedrohungsschutz</div>
+    <div class="s-scare-box"><h5>⚠ Zugriff auf diesen PC wurde gesperrt</h5>
+      <p><b>Trojaner-Spyware erkannt!</b> Ihre Passwörter, Fotos und Bankdaten werden gerade gestohlen.</p>
+      <p>Rufen Sie sofort den Support an (gebührenfrei):</p><div class="s-nummer">☎ 0800 000 000</div>
+      <p style="color:#c42b1c"><b>Ihr PC wird gesperrt in 04:59</b></p>
+      <div class="s-knoepfe"><span class="w11-btn">Abbrechen</span><span class="w11-btn akzent">OK</span></div></div></div>`;
+  const GEWINN = `<div class="s-gewinn"><div><div style="font-size:44px">🎁🎉</div><h5>Herzlichen Glückwunsch!</h5>
+    <div>Sie sind der <b>1.000.000. Besucher</b> und haben ein <b>neues Smartphone</b> gewonnen!</div>
+    <div style="margin-top:6px">Angebot gültig nur noch <b>00:29</b> Sekunden</div><span class="s-button">JETZT GEWINN ABHOLEN</span></div></div>`;
+  const VIDEO = `<div class="s-video"><div class="s-film"></div><div class="s-dialog"><b>⚠ Video-Player veraltet</b>
+    Für die Wiedergabe dieses Films ist ein Update erforderlich. Installieren Sie jetzt die neueste Version.
+    <br><span class="s-gruen">⬇ Update installieren (player_update.exe)</span></div></div>`;
+  const MAIL = `<div>Sehr geehrte Nutzerin, sehr geehrter Nutzer,<br><br>wir haben ungewöhnliche Aktivitäten in Ihrem Konto festgestellt.
+    <b>Ihr Konto wird in 24 Stunden gesperrt</b>, wenn Sie Ihr Passwort nicht bestätigen.</div>
+    <span class="w11-ol-knopf">Passwort jetzt bestätigen</span><div style="margin-top:10px;color:#616161">Ihr Microsoft-Kontoteam</div>`;
+
   const MELDUNGEN = [
     {
       echt: true,
-      html: `<div class="fenster"><div class="kopf"><span>Microsoft Word</span><span>✕</span></div>
-        <div class="inhalt"><div class="symbol">⚠️</div><div>Die Datei „Referat.docx“ konnte nicht gespeichert werden.
-        Auf dem Datenträger ist nicht genügend Speicherplatz vorhanden.</div></div>
-        <div class="fuss"><span class="haupt">OK</span></div></div>`,
-      erklaerung: '<strong>Echt.</strong> Das Fenster kommt vom Programm selbst (Word), ohne Telefonnummer und ohne Zeitdruck. <strong>Was tun?</strong> Unnötige Dateien löschen oder in OneDrive speichern, dann nochmal speichern.',
+      html: () => desktop(word('Referat.docx – Word') + dialog({ logo: WORD_LOGO, titel: 'Microsoft Word', symbol: ICON.warn,
+        text: 'Word kann das Dokument nicht speichern, weil auf dem Datenträger nicht genügend Speicherplatz vorhanden ist.<br>(Referat.docx)', knoepfe: [['OK', true]] })),
+      erklaerung: '<strong>Echt.</strong> Die Meldung kommt vom Programm selbst – sie liegt direkt über dem Word-Fenster, ohne Telefonnummer und ohne Zeitdruck. <strong>Was tun?</strong> Unnötige Dateien löschen oder in OneDrive speichern, dann nochmal speichern.',
     },
     {
       echt: false,
-      html: `<div class="browser"><div class="leiste">← → ⟳ <span class="adresse">windows-defender-alarm.example</span></div>
-        <div class="seite alarm"><strong>⚠ WARNUNG! 3 VIREN GEFUNDEN!</strong>Ihr PC ist infiziert. Rufen Sie SOFORT an:
-        <div class="nummer">0800 000 000</div><div>Noch 04:59 bis zur Sperre!</div></div></div>`,
-      erklaerung: '<strong>Fake!</strong> Erkennungszeichen: <strong>Telefonnummer</strong>, <strong>Zeitdruck</strong> („SOFORT“, Countdown), die Warnung steckt <strong>im Browser</strong> (Adressleiste!) und nicht in Windows. <strong>Was tun?</strong> Nicht anrufen, nichts klicken – Tab schließen, Lehrkraft sagen.',
+      html: () => desktop(edge({ favicon: '🛡', tab: 'Windows-Sicherheit – Warnung', url: 'windows-defender-alarm.example/sperre', unsicher: true, seite: SCARE })),
+      erklaerung: '<strong>Fake!</strong> Die „Warnung“ ist eine <strong>Webseite im Browser</strong> – schau auf den Tab und die Adresse („Nicht sicher“, windows-defender-alarm.example). Dazu <strong>Telefonnummer</strong> und <strong>Zeitdruck</strong>. Echte Windows-Meldungen nennen nie eine Telefonnummer. <strong>Was tun?</strong> Nicht anrufen, nichts klicken – Tab schließen, Lehrkraft sagen.',
     },
     {
       echt: true,
-      html: `<div class="anmeldung"><div style="font-size:2.5rem">👤</div><div><strong>Schüler:in</strong></div>
-        <div class="feld">••••••••</div><div style="font-size:13px">Das Kennwort ist falsch. Versuche es noch einmal.<br>⬆ Die Feststelltaste ist aktiviert.</div></div>`,
-      erklaerung: '<strong>Echt.</strong> Das ist der normale Windows-Anmeldebildschirm. <strong>Was tun?</strong> Feststelltaste ausschalten und das Passwort langsam neu eingeben.',
+      html: anmeldung,
+      erklaerung: '<strong>Echt.</strong> Das ist der normale Anmeldebildschirm von Windows. <strong>Was tun?</strong> Feststelltaste ausschalten und das Passwort langsam neu eingeben.',
     },
     {
       echt: false,
-      html: `<div class="browser"><div class="leiste">← → ⟳ <span class="adresse">super-gewinn-2026.example/win</span></div>
-        <div class="seite gewinn"><strong>🎉 GLÜCKWUNSCH! 🎉</strong>Du bist der 1.000.000. Besucher und hast ein
-        <strong>neues Handy</strong> gewonnen! Klicke in den nächsten <strong>30 Sekunden</strong> und gib deine Daten ein!</div></div>`,
-      erklaerung: '<strong>Fake!</strong> Niemand verschenkt einfach so Handys. <strong>Zeitdruck</strong> und „gib deine Daten ein“ sind typisch für Betrug. <strong>Was tun?</strong> Nichts eingeben, Tab schließen.',
+      html: () => desktop(edge({ favicon: '🎁', tab: 'Sie haben gewonnen!!!', url: 'super-gewinn-2026.example/win?id=88213', unsicher: true, seite: GEWINN })),
+      erklaerung: '<strong>Fake!</strong> Niemand verschenkt einfach so Handys. <strong>Zeitdruck</strong> („nur noch 29 Sekunden“) und „Gewinn abholen“ sollen dich zu Klicks und Dateneingaben verleiten. <strong>Was tun?</strong> Nichts eingeben, Tab schließen.',
     },
     {
       echt: true,
-      html: `<div class="fenster"><div class="kopf"><span>Microsoft Word</span><span>✕</span></div>
-        <div class="inhalt"><div class="symbol">⏳</div><div>Microsoft Word reagiert nicht.<br>Wenn Sie das Programm schließen, gehen
-        möglicherweise Informationen verloren.</div></div>
-        <div class="fuss"><span>Programm schließen</span><span class="haupt">Auf Reaktion des Programms warten</span></div></div>`,
-      erklaerung: '<strong>Echt.</strong> Windows meldet, dass ein Programm hängt. <strong>Was tun?</strong> Zuerst kurz warten. Passiert nichts: „Programm schließen“ und Word neu öffnen – in OneDrive ist meist alles automatisch gespeichert.',
+      html: () => desktop(word('Referat.docx – Word (Keine Rückmeldung)', true) + dialog({ logo: WORD_LOGO, titel: 'Microsoft Word', haupt: 'Microsoft Word reagiert nicht',
+        text: 'Wenn Sie das Programm schließen, gehen möglicherweise Informationen verloren.', links: ['Programm schließen', 'Auf Reaktion des Programms warten'], breite: 470 })),
+      erklaerung: '<strong>Echt.</strong> Windows meldet, dass ein Programm hängt – das Word-Fenster wird blass und zeigt „(Keine Rückmeldung)“. <strong>Was tun?</strong> Zuerst kurz warten. Passiert nichts: „Programm schließen“ und Word neu öffnen – in OneDrive ist meist alles automatisch gespeichert.',
     },
     {
       echt: false,
-      html: `<div class="browser"><div class="leiste">← → ⟳ <span class="adresse">gratis-filme-hd.example/play</span></div>
-        <div class="seite"><div style="font-size:2rem">🎬</div><strong>Dein Video-Player ist veraltet!</strong><br>
-        Um das Video zu sehen, lade jetzt das Update herunter: <u>player_update.exe</u></div></div>`,
-      erklaerung: '<strong>Fake!</strong> Webseiten verlangen nie, dass du ein Programm (.exe) herunterlädst, um ein Video zu sehen. So kommt Schadsoftware auf den PC. <strong>Was tun?</strong> Nichts herunterladen, Seite verlassen.',
+      html: () => desktop(edge({ favicon: '🎬', tab: 'Gratis Filme HD – Jetzt ansehen', url: 'gratis-filme-hd.example/play/film-123', seite: VIDEO })),
+      erklaerung: '<strong>Fake!</strong> Webseiten verlangen nie, dass du ein Programm (<strong>.exe</strong>) herunterlädst, um ein Video zu sehen – so kommt Schadsoftware auf den PC. Achtung: Das Schloss 🔒 heißt nur, dass die Verbindung verschlüsselt ist – <strong>nicht</strong>, dass die Seite ehrlich ist! <strong>Was tun?</strong> Nichts herunterladen, Seite verlassen.',
     },
     {
       echt: true,
-      html: `<div class="toast"><div style="font-size:12px;opacity:.8">Windows Update</div><strong>Neustart erforderlich</strong><br>
-        Updates wurden heruntergeladen. Starte das Gerät neu, damit sie installiert werden.</div>`,
-      erklaerung: '<strong>Echt.</strong> Eine normale Windows-Benachrichtigung unten rechts. <strong>Was tun?</strong> Speichern und bei Gelegenheit neu starten – Updates schließen Sicherheitslücken.',
+      html: () => desktop('', TOAST),
+      erklaerung: '<strong>Echt.</strong> Eine normale Windows-Benachrichtigung unten rechts über der Taskleiste. <strong>Was tun?</strong> Arbeit speichern und bei Gelegenheit neu starten – Updates schließen Sicherheitslücken.',
     },
     {
       echt: false,
-      html: `<div class="fenster"><div class="kopf"><span>E-Mail · Von: konto-sicherheit@micros0ft-hilfe.example</span><span>✕</span></div>
-        <div class="inhalt"><div class="symbol">📧</div><div><strong>Ihr Konto wird in 24 Stunden gesperrt!</strong><br>
-        Bestätigen Sie jetzt Ihr Passwort, sonst verlieren Sie alle Daten: <u>hier klicken</u></div></div></div>`,
-      erklaerung: '<strong>Fake (Phishing)!</strong> Schau auf den Absender: „micros<strong>0</strong>ft“ mit einer Null. Drohung, Zeitdruck und „Passwort bestätigen“ – echte Firmen fragen nie per E-Mail nach deinem Passwort. <strong>Was tun?</strong> Nicht klicken, Lehrkraft zeigen, löschen.',
+      html: () => desktop(outlook({ name: 'Konto-Sicherheit', kuerzel: 'KS', adresse: 'konto-sicherheit@micros0ft-hilfe.example', betreff: 'Dringend: Ihr Konto wird gesperrt!', text: MAIL })),
+      erklaerung: '<strong>Fake (Phishing)!</strong> Schau auf die Absenderadresse: „micros<strong>0</strong>ft-hilfe“ mit einer Null. Outlook warnt sogar: „Sie erhalten nicht oft E-Mails von …“. Drohung, Zeitdruck und „Passwort bestätigen“ – echte Firmen fragen nie per E-Mail nach deinem Passwort. <strong>Was tun?</strong> Nicht klicken, Lehrkraft zeigen, löschen.',
     },
   ];
+  function passeBuehneAn() {
+    const b = document.getElementById('echt-buehne'), innen = b.firstElementChild;
+    if (!innen || !b.clientWidth) return;
+    const f = b.clientWidth / 960;
+    innen.style.transform = `scale(${f})`;
+    b.style.height = 540 * f + 'px';
+  }
+  window.addEventListener('resize', passeBuehneAn);
   let echtNr = 0, echtPunkte = 0, echtBeantwortet = false;
   const echtStand = () => { document.getElementById('echt-stand').textContent = `Punkte: ${echtPunkte} von ${MELDUNGEN.length}`; };
   function zeigeMeldung() {
     const m = MELDUNGEN[echtNr];
     document.getElementById('echt-nr').textContent = `Meldung ${echtNr + 1} von ${MELDUNGEN.length}`;
     const b = document.getElementById('echt-buehne');
-    b.innerHTML = '<span class="uebung-stempel">nachgebaut – Übung</span>' + m.html;
+    b.innerHTML = m.html();
+    passeBuehneAn();
     document.getElementById('echt-feedback').innerHTML = '';
     document.getElementById('echt-knoepfe').hidden = false;
     document.getElementById('echt-weiter').hidden = true;
