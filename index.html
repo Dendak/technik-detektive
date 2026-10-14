@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Technik-Detektive</title>
+<meta name="robots" content="noindex">
+<style>
+  :root {
+    --hg: #f6f4f1; --karte: #ffffff; --text: #1f1d1b; --leise: #6b6560; --rand: #e2ddd7;
+    --akzent: #cb1726; --akzent-text: #fff; --gut: #1f7a3f; --gut-hg: #e3f3e8; --schlecht: #b3261e; --schlecht-hg: #fbe6e4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --hg: #171513; --karte: #221f1c; --text: #f1ede8; --leise: #a59d95; --rand: #3a3530;
+      --akzent: #e0414e; --gut: #5cc483; --gut-hg: #183324; --schlecht: #f2867e; --schlecht-hg: #3a1d1b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--hg); color: var(--text); font: 17px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 60rem; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+  h1 { font-size: 1.9rem; margin: 0 0 .2rem; }
+  h2 { font-size: 1.35rem; margin: 0 0 .4rem; }
+  .unter { color: var(--leise); margin: 0 0 1rem; }
+  nav.reiter { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }
+  nav.reiter button { background: var(--karte); color: var(--text); border: 2px solid var(--rand); }
+  nav.reiter button[aria-selected=true] { border-color: var(--akzent); background: var(--akzent); color: var(--akzent-text); }
+  button {
+    font: inherit; border: 0; border-radius: 10px; padding: .55rem 1rem; cursor: pointer;
+    background: var(--akzent); color: var(--akzent-text);
+  }
+  button.zweit { background: var(--karte); color: var(--text); border: 2px solid var(--rand); }
+  .karte { background: var(--karte); border: 1px solid var(--rand); border-radius: 14px; padding: 1.1rem; margin-bottom: 1rem; }
+  .punkte { font-weight: 700; }
+  .rueckmeldung { margin-top: .8rem; padding: .7rem .9rem; border-radius: 10px; }
+  .rueckmeldung.gut { background: var(--gut-hg); color: var(--text); border-left: 5px solid var(--gut); }
+  .rueckmeldung.schlecht { background: var(--schlecht-hg); color: var(--text); border-left: 5px solid var(--schlecht); }
+  .knoepfe { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .8rem; }
+  [hidden] { display: none !important; }
+
+  /* ---------- nachgebaute Fenster (nur zur Übung) ---------- */
+  .buehne { background: #3b6ea8; background: linear-gradient(135deg, #2b5a8f, #5b8fc7); border-radius: 12px; padding: 1.5rem 1rem; min-height: 15rem; display: grid; place-items: center; }
+  .fenster { width: min(100%, 30rem); background: #fff; color: #1b1b1b; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,.35); overflow: hidden; font-family: "Segoe UI", system-ui, sans-serif; font-size: 15px; }
+  .fenster .kopf { background: #f3f3f3; padding: .45rem .75rem; display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid #ddd; }
+  .fenster .inhalt { padding: 1rem 1.1rem; display: flex; gap: .8rem; }
+  .fenster .symbol { font-size: 2rem; line-height: 1; }
+  .fenster .fuss { padding: .6rem 1rem; background: #f7f7f7; display: flex; justify-content: flex-end; gap: .5rem; }
+  .fenster .fuss span { border: 1px solid #b8b8b8; background: #fff; border-radius: 4px; padding: .2rem .9rem; font-size: 14px; }
+  .fenster .fuss span.haupt { background: #0067c0; color: #fff; border-color: #0067c0; }
+  .browser { width: min(100%, 34rem); background: #fff; color: #1b1b1b; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.35); font-family: system-ui, sans-serif; }
+  .browser .leiste { background: #dfe3e8; padding: .4rem .6rem; font-size: 13px; display: flex; gap: .5rem; align-items: center; }
+  .browser .adresse { flex: 1; background: #fff; border-radius: 999px; padding: .15rem .7rem; color: #444; }
+  .browser .seite { padding: 1.2rem; }
+  .alarm { background: #c4141c; color: #fff; text-align: center; }
+  .alarm strong { font-size: 1.25rem; display: block; margin-bottom: .4rem; }
+  .alarm .nummer { font-size: 1.4rem; font-weight: 800; background: #fff; color: #c4141c; display: inline-block; padding: .2rem .8rem; border-radius: 6px; margin: .5rem 0; }
+  .gewinn { background: linear-gradient(135deg, #ffd54a, #ff8a00); color: #3a2200; text-align: center; }
+  .gewinn strong { font-size: 1.4rem; display: block; }
+  .toast { width: min(100%, 22rem); background: #2b2b2b; color: #fff; border-radius: 8px; padding: .9rem 1rem; box-shadow: 0 10px 30px rgba(0,0,0,.35); font-family: "Segoe UI", system-ui, sans-serif; font-size: 14px; justify-self: end; align-self: end; }
+  .anmeldung { width: min(100%, 22rem); background: rgba(20,30,50,.75); color: #fff; border-radius: 12px; padding: 1.3rem; text-align: center; font-family: "Segoe UI", system-ui, sans-serif; }
+  .anmeldung .feld { background: #fff; color: #333; border-radius: 4px; padding: .35rem .6rem; margin: .7rem 0 .4rem; text-align: left; letter-spacing: .2em; }
+  .uebung-stempel { position: absolute; top: .3rem; right: .5rem; font-size: 11px; background: rgba(0,0,0,.55); color: #fff; padding: .1rem .45rem; border-radius: 4px; }
+  .buehne { position: relative; }
+
+  /* ---------- Alarm-Training ---------- */
+  #alarmflaeche { position: fixed; inset: 0; z-index: 50; background: #b00010; color: #fff; display: flex; flex-direction: column; font-family: system-ui, sans-serif; }
+  #alarmflaeche .tabs { background: #dfe3e8; color: #222; display: flex; align-items: center; gap: .3rem; padding: .35rem .5rem 0; font-size: 14px; }
+  #alarmflaeche .tab { background: #fff; padding: .35rem .7rem; border-radius: 8px 8px 0 0; display: flex; gap: .6rem; align-items: center; }
+  #alarmflaeche .tab button { background: transparent; color: #444; padding: 0 .35rem; font-size: 16px; }
+  #alarmflaeche .tab button:hover { background: #e6e6e6; }
+  #alarmflaeche .adresszeile { background: #fff; color: #444; padding: .3rem .8rem; font-size: 14px; border-bottom: 1px solid #ccc; }
+  #alarmflaeche .mitte { flex: 1; display: grid; place-items: center; text-align: center; padding: 1rem; }
+  #alarmflaeche h3 { font-size: clamp(1.6rem, 4vw, 3rem); margin: .2rem 0; }
+  #alarmflaeche .countdown { font-size: 2.5rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+  #alarmflaeche .nummer { font-size: 2rem; font-weight: 800; background: #fff; color: #b00010; padding: .3rem 1rem; border-radius: 8px; display: inline-block; margin: .6rem 0; }
+  #alarmflaeche .fallen { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; margin-top: 1rem; }
+  #alarmflaeche .fallen button { background: #fff; color: #b00010; font-weight: 700; }
+  #alarmflaeche .hinweis-unten { background: rgba(0,0,0,.35); padding: .5rem; text-align: center; font-size: 14px; }
+  #alarmmeldung { position: fixed; left: 50%; bottom: 1.2rem; transform: translateX(-50%); z-index: 60; background: #fff; color: #1b1b1b; padding: .8rem 1.2rem; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.4); max-width: 90vw; font-weight: 600; }
+
+  /* ---------- Ticket ---------- */
+  textarea { width: 100%; min-height: 9rem; font: inherit; padding: .7rem; border-radius: 10px; border: 2px solid var(--rand); background: var(--karte); color: var(--text); }
+  select { font: inherit; padding: .4rem; border-radius: 8px; border: 1px solid var(--rand); background: var(--karte); color: var(--text); }
+  .checkliste { list-style: none; padding: 0; margin: .8rem 0 0; display: grid; gap: .35rem; }
+  .checkliste li { padding: .35rem .6rem; border-radius: 8px; background: var(--hg); }
+  .checkliste li.ja { background: var(--gut-hg); }
+  .checkliste li::before { content: "○ "; font-weight: 700; }
+  .checkliste li.ja::before { content: "✓ "; color: var(--gut); }
+  .sterne { font-size: 1.8rem; letter-spacing: .1em; }
+
+  /* ---------- Fälle ---------- */
+  .fall-bild { font-size: 3rem; line-height: 1; }
+  .optionen { display: grid; gap: .5rem; margin-top: .8rem; }
+  .optionen button { text-align: left; background: var(--karte); color: var(--text); border: 2px solid var(--rand); }
+  .optionen button:hover { border-color: var(--akzent); }
+  .fortschritt { color: var(--leise); font-size: .9rem; }
+  footer { margin-top: 2rem; color: var(--leise); font-size: .85rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>🔍 Technik-Detektive</h1>
+  <p class="unter">Probleme lösen wie die Profis: <strong>Lesen – Prüfen – Neu starten – Melden</strong></p>
+
+  <nav class="reiter" role="tablist">
+    <button role="tab" aria-selected="true" data-teil="echt">1 · Echt oder Fake?</button>
+    <button role="tab" aria-selected="false" data-teil="alarm">2 · Alarm-Training</button>
+    <button role="tab" aria-selected="false" data-teil="faelle">3 · Detektiv-Fälle</button>
+    <button role="tab" aria-selected="false" data-teil="ticket">4 · Ticket-Check</button>
+  </nav>
+
+  <!-- ===================== 1 Echt oder Fake ===================== -->
+  <section id="teil-echt">
+    <div class="karte">
+      <h2>Echt oder Fake?</h2>
+      <p class="unter" style="margin:0">Schau dir jede Meldung genau an. Ist sie echt – oder will dich jemand reinlegen?
+        <span class="punkte" id="echt-stand"></span></p>
+    </div>
+    <div class="karte">
+      <p class="fortschritt" id="echt-nr"></p>
+      <div class="buehne" id="echt-buehne"></div>
+      <div class="knoepfe" id="echt-knoepfe">
+        <button type="button" data-wahl="echt">✅ Echt</button>
+        <button type="button" data-wahl="fake">🚩 Fake</button>
+      </div>
+      <div id="echt-feedback"></div>
+      <div class="knoepfe"><button type="button" class="zweit" id="echt-weiter" hidden>Nächste Meldung →</button></div>
+    </div>
+  </section>
+
+  <!-- ===================== 2 Alarm-Training ===================== -->
+  <section id="teil-alarm" hidden>
+    <div class="karte">
+      <h2>Alarm-Training</h2>
+      <p>Gleich erscheint eine <strong>gefälschte Virenwarnung</strong> über den ganzen Bildschirm – so, wie Betrüger sie
+        auf Webseiten zeigen. Es ist nur eine Übung, es passiert nichts.</p>
+      <p><strong>Deine Mission:</strong> Komm so schnell wie möglich raus – ohne auf die Falle hereinzufallen.</p>
+      <div class="knoepfe"><button type="button" id="alarm-start">🚨 Simulation starten</button></div>
+      <div id="alarm-ergebnis"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 3 Fälle ===================== -->
+  <section id="teil-faelle" hidden>
+    <div class="karte">
+      <h2>Detektiv-Fälle</h2>
+      <p class="unter" style="margin:0">Wähle einen Fall und finde Schritt für Schritt die Lösung. <span class="punkte" id="faelle-stand"></span></p>
+      <div class="knoepfe" id="fall-auswahl"></div>
+    </div>
+    <div class="karte" id="fall-karte" hidden>
+      <p class="fortschritt" id="fall-fortschritt"></p>
+      <div class="fall-bild" id="fall-bild"></div>
+      <p id="fall-text" style="font-size:1.1rem"></p>
+      <div class="optionen" id="fall-optionen"></div>
+      <div id="fall-feedback"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 4 Ticket ===================== -->
+  <section id="teil-ticket" hidden>
+    <div class="karte">
+      <h2>Ticket-Check: Melde den Fehler wie ein Profi</h2>
+      <p>Die IT-Betreuung kann nur helfen, wenn sie genau weiß, was los ist. Wähle einen Fall und schreib eine
+        Fehlermeldung. Die Liste zeigt dir live, was schon drin ist.</p>
+      <p><label>Fall: <select id="ticket-fall">
+        <option>Kein Ton beim Video</option>
+        <option>Webseite lädt nicht</option>
+        <option>Word reagiert nicht mehr</option>
+        <option>Passwort wird nicht angenommen</option>
+        <option>Drucker druckt nicht</option>
+      </select></label></p>
+      <textarea id="ticket-text" placeholder="Hallo, ich wollte …"></textarea>
+      <ul class="checkliste" id="ticket-liste"></ul>
+      <p><span class="sterne" id="ticket-sterne"></span></p>
+      <div class="knoepfe">
+        <button type="button" class="zweit" id="ticket-beispiel">Schlechtes Beispiel zeigen</button>
+        <button type="button" class="zweit" id="ticket-leeren">Neu anfangen</button>
+      </div>
+      <p class="unter" style="margin-top:1rem">Tipp: Einen <strong>Screenshot</strong> machst du mit
+        <strong>Windows-Taste + Umschalt + S</strong>. Der Text wird nicht gespeichert und nirgends verschickt.</p>
+    </div>
+  </section>
+
+  <footer>Übungsseite für den Unterricht (Digitale Grundbildung). Alle Meldungen sind nachgebaut – Telefonnummern und
+    Adressen sind erfunden. Es wird nichts gespeichert.</footer>
+</main>
+
+<!-- Vollbild-Alarm (Übung) -->
+<div id="alarmflaeche" hidden>
+  <div class="tabs"><div class="tab">⚠️ Sicherheitswarnung!!! <button type="button" id="alarm-tab-zu" title="Tab schließen">✕</button></div></div>
+  <div class="adresszeile">🔒 https://pc-sicherheit-alarm24.example/warnung</div>
+  <div class="mitte">
+    <div>
+      <div style="font-size:3rem">⛔</div>
+      <h3>IHR COMPUTER WURDE GESPERRT!</h3>
+      <p>Auf Ihrem Gerät wurden <strong>5 gefährliche Viren</strong> gefunden. Ihre Fotos, Passwörter und Bankdaten sind in Gefahr!</p>
+      <p>Rufen Sie SOFORT den technischen Support an:</p>
+      <div class="nummer">☎ 0800 000 00 00</div>
+      <p>Ihr Computer wird gelöscht in:</p>
+      <div class="countdown" id="alarm-countdown">04:59</div>
+      <div class="fallen">
+        <button type="button" data-falle="anrufen">📞 Jetzt anrufen</button>
+        <button type="button" data-falle="download">⬇ Virenscanner herunterladen</button>
+        <button type="button" data-falle="ok">OK</button>
+      </div>
+    </div>
+  </div>
+  <div class="hinweis-unten">Diese Seite ist eine ÜBUNG der Technik-Detektive. Nichts davon ist echt.</div>
+</div>
+<div id="alarmmeldung" hidden></div>
+
+<script>
+  // ---------- Reiter ----------
+  const reiter = document.querySelectorAll('nav.reiter button');
+  reiter.forEach((r) => r.addEventListener('click', () => {
+    reiter.forEach((x) => x.setAttribute('aria-selected', x === r));
+    for (const t of ['echt', 'alarm', 'faelle', 'ticket']) document.getElementById('teil-' + t).hidden = t !== r.dataset.teil;
+  }));
+  const el = (html) => { const d = document.createElement('div'); d.innerHTML = html.trim(); return d.firstChild; };
+  const rueck = (gut, html) => `<div class="rueckmeldung ${gut ? 'gut' : 'schlecht'}">${html}</div>`;
+
+  // ---------- 1 Echt oder Fake ----------
+  const MELDUNGEN = [
+    {
+      echt: true,
+      html: `<div class="fenster"><div class="kopf"><span>Microsoft Word</span><span>✕</span></div>
+        <div class="inhalt"><div class="symbol">⚠️</div><div>Die Datei „Referat.docx“ konnte nicht gespeichert werden.
+        Auf dem Datenträger ist nicht genügend Speicherplatz vorhanden.</div></div>
+        <div class="fuss"><span class="haupt">OK</span></div></div>`,
+      erklaerung: '<strong>Echt.</strong> Das Fenster kommt vom Programm selbst (Word), ohne Telefonnummer und ohne Zeitdruck. <strong>Was tun?</strong> Unnötige Dateien löschen oder in OneDrive speichern, dann nochmal speichern.',
+    },
+    {
+      echt: false,
+      html: `<div class="browser"><div class="leiste">← → ⟳ <span class="adresse">windows-defender-alarm.example</span></div>
+        <div class="seite alarm"><strong>⚠ WARNUNG! 3 VIREN GEFUNDEN!</strong>Ihr PC ist infiziert. Rufen Sie SOFORT an:
+        <div class="nummer">0800 000 000</div><div>Noch 04:59 bis zur Sperre!</div></div></div>`,
+      erklaerung: '<strong>Fake!</strong> Erkennungszeichen: <strong>Telefonnummer</strong>, <strong>Zeitdruck</strong> („SOFORT“, Countdown), die Warnung steckt <strong>im Browser</strong> (Adressleiste!) und nicht in Windows. <strong>Was tun?</strong> Nicht anrufen, nichts klicken – Tab schließen, Lehrkraft sagen.',
+    },
+    {
+      echt: true,
+      html: `<div class="anmeldung"><div style="font-size:2.5rem">👤</div><div><strong>Schüler:in</strong></div>
+        <div class="feld">••••••••</div><div style="font-size:13px">Das Kennwort ist falsch. Versuche es noch einmal.<br>⬆ Die Feststelltaste ist aktiviert.</div></div>`,
+      erklaerung: '<strong>Echt.</strong> Das ist der normale Windows-Anmeldebildschirm. <strong>Was tun?</strong> Feststelltaste ausschalten und das Passwort langsam neu eingeben.',
+    },
+    {
+      echt: false,
+      html: `<div class="browser"><div class="leiste">← → ⟳ <span class="adresse">super-gewinn-2026.example/win</span></div>
+        <div class="seite gewinn"><strong>🎉 GLÜCKWUNSCH! 🎉</strong>Du bist der 1.000.000. Besucher und hast ein
+        <strong>neues Handy</strong> gewonnen! Klicke in den nächsten <strong>30 Sekunden</strong> und gib deine Daten ein!</div></div>`,
+      erklaerung: '<strong>Fake!</strong> Niemand verschenkt einfach so Handys. <strong>Zeitdruck</strong> und „gib deine Daten ein“ sind typisch für Betrug. <strong>Was tun?</strong> Nichts eingeben, Tab schließen.',
+    },
+    {
+      echt: true,
+      html: `<div class="fenster"><div class="kopf"><span>Microsoft Word</span><span>✕</span></div>
+        <div class="inhalt"><div class="symbol">⏳</div><div>Microsoft Word reagiert nicht.<br>Wenn Sie das Programm schließen, gehen
+        möglicherweise Informationen verloren.</div></div>
+        <div class="fuss"><span>Programm schließen</span><span class="haupt">Auf Reaktion des Programms warten</span></div></div>`,
+      erklaerung: '<strong>Echt.</strong> Windows meldet, dass ein Programm hängt. <strong>Was tun?</strong> Zuerst kurz warten. Passiert nichts: „Programm schließen“ und Word neu öffnen – in OneDrive ist meist alles automatisch gespeichert.',
+    },
+    {
+      echt: false,
+      html: `<div class="browser"><div class="leiste">← → ⟳ <span class="adresse">gratis-filme-hd.example/play</span></div>
+        <div class="seite"><div style="font-size:2rem">🎬</div><strong>Dein Video-Player ist veraltet!</strong><br>
+        Um das Video zu sehen, lade jetzt das Update herunter: <u>player_update.exe</u></div></div>`,
+      erklaerung: '<strong>Fake!</strong> Webseiten verlangen nie, dass du ein Programm (.exe) herunterlädst, um ein Video zu sehen. So kommt Schadsoftware auf den PC. <strong>Was tun?</strong> Nichts herunterladen, Seite verlassen.',
+    },
+    {
+      echt: true,
+      html: `<div class="toast"><div style="font-size:12px;opacity:.8">Windows Update</div><strong>Neustart erforderlich</strong><br>
+        Updates wurden heruntergeladen. Starte das Gerät neu, damit sie installiert werden.</div>`,
+      erklaerung: '<strong>Echt.</strong> Eine normale Windows-Benachrichtigung unten rechts. <strong>Was tun?</strong> Speichern und bei Gelegenheit neu starten – Updates schließen Sicherheitslücken.',
+    },
+    {
+      echt: false,
+      html: `<div class="fenster"><div class="kopf"><span>E-Mail · Von: konto-sicherheit@micros0ft-hilfe.example</span><span>✕</span></div>
+        <div class="inhalt"><div class="symbol">📧</div><div><strong>Ihr Konto wird in 24 Stunden gesperrt!</strong><br>
+        Bestätigen Sie jetzt Ihr Passwort, sonst verlieren Sie alle Daten: <u>hier klicken</u></div></div></div>`,
+      erklaerung: '<strong>Fake (Phishing)!</strong> Schau auf den Absender: „micros<strong>0</strong>ft“ mit einer Null. Drohung, Zeitdruck und „Passwort bestätigen“ – echte Firmen fragen nie per E-Mail nach deinem Passwort. <strong>Was tun?</strong> Nicht klicken, Lehrkraft zeigen, löschen.',
+    },
+  ];
+  let echtNr = 0, echtPunkte = 0, echtBeantwortet = false;
+  const echtStand = () => { document.getElementById('echt-stand').textContent = `Punkte: ${echtPunkte} von ${MELDUNGEN.length}`; };
+  function zeigeMeldung() {
+    const m = MELDUNGEN[echtNr];
+    document.getElementById('echt-nr').textContent = `Meldung ${echtNr + 1} von ${MELDUNGEN.length}`;
+    const b = document.getElementById('echt-buehne');
+    b.innerHTML = '<span class="uebung-stempel">nachgebaut – Übung</span>' + m.html;
+    document.getElementById('echt-feedback').innerHTML = '';
+    document.getElementById('echt-knoepfe').hidden = false;
+    document.getElementById('echt-weiter').hidden = true;
+    echtBeantwortet = false;
+  }
+  document.querySelectorAll('#echt-knoepfe button').forEach((k) => k.addEventListener('click', () => {
+    if (echtBeantwortet) return;
+    echtBeantwortet = true;
+    const m = MELDUNGEN[echtNr], richtig = (k.dataset.wahl === 'echt') === m.echt;
+    if (richtig) echtPunkte++;
+    echtStand();
+    document.getElementById('echt-feedback').innerHTML = rueck(richtig, (richtig ? '🎯 Richtig! ' : '❌ Leider nein. ') + m.erklaerung);
+    document.getElementById('echt-knoepfe').hidden = true;
+    const weiter = document.getElementById('echt-weiter');
+    weiter.hidden = false;
+    weiter.textContent = echtNr < MELDUNGEN.length - 1 ? 'Nächste Meldung →' : 'Nochmal von vorne';
+  }));
+  document.getElementById('echt-weiter').addEventListener('click', () => {
+    if (echtNr < MELDUNGEN.length - 1) echtNr++;
+    else {
+      document.getElementById('echt-feedback').innerHTML = '';
+      echtNr = 0; echtPunkte = 0; echtStand();
+    }
+    zeigeMeldung();
+  });
+  echtStand(); zeigeMeldung();
+
+  // ---------- 2 Alarm-Training ----------
+  const flaeche = document.getElementById('alarmflaeche'), meldung = document.getElementById('alarmmeldung');
+  let alarmStart = 0, alarmUhr = null, fallenGetappt = 0, vollbildVerlassen = false;
+  function sag(text) { meldung.textContent = text; meldung.hidden = false; }
+  document.getElementById('alarm-start').addEventListener('click', async () => {
+    fallenGetappt = 0; vollbildVerlassen = false;
+    flaeche.hidden = false; meldung.hidden = true;
+    try { await document.documentElement.requestFullscreen(); } catch (e) { vollbildVerlassen = true; }
+    alarmStart = Date.now();
+    let rest = 299;
+    clearInterval(alarmUhr);
+    alarmUhr = setInterval(() => {
+      rest = Math.max(0, rest - 1);
+      document.getElementById('alarm-countdown').textContent = `0${Math.floor(rest / 60)}:${String(rest % 60).padStart(2, '0')}`;
+    }, 1000);
+  });
+  document.addEventListener('fullscreenchange', () => {
+    if (flaeche.hidden || document.fullscreenElement) return;
+    vollbildVerlassen = true;
+    sag('👍 Gut – Vollbild verlassen (Esc)! Jetzt den Tab schließen: das ✕ oben links beim Tab.');
+  });
+  flaeche.querySelectorAll('[data-falle]').forEach((k) => k.addEventListener('click', () => {
+    fallenGetappt++;
+    const texte = {
+      anrufen: '🚫 FALLE! Am Telefon wollen Betrüger Geld oder Zugriff auf deinen PC. Nie anrufen!',
+      download: '🚫 FALLE! Der „Virenscanner“ wäre selbst die Schadsoftware. Nie etwas herunterladen!',
+      ok: '🚫 FALLE! Auf solchen Seiten klickst du gar nichts an – auch nicht „OK“.',
+    };
+    sag(texte[k.dataset.falle] + ' Tipp: Drück Esc, dann schließ den Tab.');
+  }));
+  document.getElementById('alarm-tab-zu').addEventListener('click', () => {
+    clearInterval(alarmUhr);
+    const sek = Math.round((Date.now() - alarmStart) / 1000);
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    flaeche.hidden = true; meldung.hidden = true;
+    const gut = fallenGetappt === 0;
+    document.getElementById('alarm-ergebnis').innerHTML = rueck(gut,
+      `<strong>${gut ? '🏆 Geschafft – ohne in eine Falle zu tappen!' : '✅ Geschafft – aber du hast ' + fallenGetappt + '× auf eine Falle geklickt.'}</strong>
+      Zeit: <strong>${sek} Sekunden</strong>.<br><br>
+      <strong>So kommst du aus einer Fake-Warnung raus:</strong><br>
+      1. <strong>Esc</strong> drücken (Vollbild verlassen).<br>
+      2. Den <strong>Tab schließen</strong> (✕) oder <strong>Strg + W</strong>.<br>
+      3. Geht gar nichts: <strong>Strg + Umschalt + Esc</strong> → Task-Manager → Browser → <strong>Task beenden</strong>.<br>
+      4. Der Lehrkraft Bescheid sagen. Nie anrufen, nie etwas herunterladen.`);
+  });
+
+  // ---------- 3 Fälle ----------
+  const FAELLE = [
+    { titel: 'Kein Ton', bild: '🔇', schritte: [
+      { text: 'Du willst ein Video im Unterricht ansehen. Das Bild läuft, aber du hörst nichts. Was prüfst du ZUERST?',
+        optionen: [
+          ['Die Lautstärke im Video und unten rechts in der Taskleiste (🔇?).', true, 'Genau! Oft ist einfach nur der Ton stumm oder ganz leise.'],
+          ['Ich hole sofort die IT-Betreuung.', false, 'Zu früh! Zuerst selbst die einfachen Dinge prüfen – das geht schneller.'],
+          ['Ich installiere einen neuen Video-Player.', false, 'Nein – nie einfach Programme installieren. Der Fehler ist meist viel einfacher.'],
+        ] },
+      { text: 'Die Lautstärke ist auf 80 %, nicht stumm. Trotzdem kein Ton. Du hast Kopfhörer an. Nächster Schritt?',
+        optionen: [
+          ['Den PC sofort ausschalten.', false, 'Zu grob. Erst das Naheliegende: Die Kopfhörer!'],
+          ['Prüfen, ob der Kopfhörer-Stecker richtig steckt, und unter 🔊 das richtige Ausgabegerät wählen.', true, 'Super! Der Ton geht oft an die Lautsprecher statt an die Kopfhörer.'],
+          ['Ein anderes Video probieren und hoffen.', false, 'Das zeigt nur, dass es am Gerät liegt – prüf lieber gezielt Stecker und Ausgabegerät.'],
+        ] },
+      { text: 'Stecker steckt, Ausgabegerät stimmt. Immer noch nichts. Was jetzt?',
+        optionen: [
+          ['PC neu starten. Hilft das nicht: Fehler genau melden.', true, 'Perfekt: Lesen – Prüfen – Neu starten – Melden!'],
+          ['Aufgeben und nichts sagen.', false, 'Dann bleibt der Fehler für alle anderen. Melden hilft allen!'],
+          ['Am Lautsprecher-Kabel hinten am PC herumreißen.', false, 'Bitte nicht – vorsichtig sein! Neu starten und melden.'],
+        ] },
+    ] },
+    { titel: 'Internet weg', bild: '🌐', schritte: [
+      { text: 'Keine Webseite lädt. Unten rechts siehst du statt dem WLAN-Symbol eine kleine Weltkugel 🌐. Was prüfst du?',
+        optionen: [
+          ['Ob der Flugmodus an ist und ob du mit dem Schul-WLAN verbunden bist.', true, 'Richtig! Die Weltkugel heißt: keine Verbindung.'],
+          ['Ich lösche den Browserverlauf.', false, 'Das hilft nicht – das Problem ist die Verbindung, nicht der Browser.'],
+          ['Ich kaufe einen neuen Router.', false, '😄 Sicher nicht. Erst die Verbindung am Gerät prüfen.'],
+        ] },
+      { text: 'Flugmodus ist aus, WLAN ist verbunden – trotzdem lädt nichts. Was ist schlau?',
+        optionen: [
+          ['Fragen: Geht es bei meinen Nachbar:innen?', true, 'Sehr schlau! Geht es bei allen nicht, liegt es am Netz der Schule – dann melden.'],
+          ['Hundert Mal auf „Neu laden“ klicken.', false, 'Das ändert nichts. Finde heraus, ob nur du betroffen bist.'],
+          ['Ein fremdes WLAN ohne Passwort suchen.', false, 'Gefährlich! Offene, fremde WLANs können mitlesen.'],
+        ] },
+      { text: 'Bei allen anderen geht es – nur bei dir nicht. Was jetzt?',
+        optionen: [
+          ['WLAN aus- und einschalten bzw. neu starten. Hilft das nicht: melden.', true, 'Genau! Ein Neustart behebt viele Verbindungsprobleme.'],
+          ['Die Netzwerkeinstellungen wild verändern.', false, 'Nicht herumprobieren – das macht es oft schlimmer.'],
+          ['Ich arbeite heute einfach nicht.', false, 'Besser: Neustart probieren und dann melden.'],
+        ] },
+    ] },
+    { titel: 'Alles riesig', bild: '🔎', schritte: [
+      { text: 'Im Browser ist plötzlich alles RIESIG – du siehst nur noch zwei Wörter. Was ist wohl passiert?',
+        optionen: [
+          ['Jemand hat hineingezoomt (Strg + Mausrad).', true, 'Richtig! Der Browser-Zoom steht z. B. auf 300 %.'],
+          ['Der Bildschirm ist kaputt.', false, 'Unwahrscheinlich – nur der Browser ist groß, alles andere normal.'],
+          ['Ein Virus!', false, 'Nein, nicht alles ist ein Virus 😉. Das ist nur der Zoom.'],
+        ] },
+      { text: 'Mit welchem Kürzel stellst du den Zoom wieder auf 100 %?',
+        optionen: [
+          ['Strg + Z', false, 'Strg + Z macht den letzten Schritt rückgängig – nicht den Zoom.'],
+          ['Strg + 0 (Null)', true, 'Genau! Strg + 0 setzt den Zoom zurück. Strg + Minus verkleinert schrittweise.'],
+          ['Alt + F4', false, 'Achtung: Alt + F4 schließt das ganze Fenster!'],
+        ] },
+    ] },
+    { titel: 'y statt z', bild: '⌨️', schritte: [
+      { text: 'Du tippst „Zug“, am Bildschirm steht „Yug“. Y und Z sind vertauscht! Woran liegt das?',
+        optionen: [
+          ['Die Tastatur ist kaputt.', false, 'Nein – die Tasten funktionieren ja, nur vertauscht.'],
+          ['Das Tastaturlayout steht auf Englisch (ENG) statt Deutsch (DEU).', true, 'Richtig! Englische Tastaturen haben Y und Z an anderer Stelle.'],
+          ['Die Feststelltaste ist an.', false, 'Die macht nur GROSSBUCHSTABEN, vertauscht aber keine Tasten.'],
+        ] },
+      { text: 'Wie stellst du wieder auf Deutsch um?',
+        optionen: [
+          ['Windows-Taste + Leertaste (oder unten rechts auf „ENG“ klicken und „DEU“ wählen).', true, 'Super – Fall gelöst! 🕵️'],
+          ['Windows neu installieren.', false, 'Viel zu viel! Es ist nur eine Einstellung.'],
+          ['Die Tasten Y und Z umstecken.', false, '😄 Bitte nicht – das löst nichts.'],
+        ] },
+    ] },
+  ];
+  const geloest = new Set();
+  let fallNr = -1, schrittNr = 0;
+  const faelleStand = () => { document.getElementById('faelle-stand').textContent = `Gelöst: ${geloest.size} von ${FAELLE.length}`; };
+  const auswahl = document.getElementById('fall-auswahl');
+  FAELLE.forEach((f, i) => {
+    const k = document.createElement('button'); k.type = 'button'; k.className = 'zweit';
+    k.textContent = f.bild + ' ' + f.titel; k.addEventListener('click', () => starteFall(i)); auswahl.appendChild(k);
+  });
+  function starteFall(i) { fallNr = i; schrittNr = 0; document.getElementById('fall-karte').hidden = false; zeigeSchritt(); }
+  function zeigeSchritt() {
+    const f = FAELLE[fallNr], s = f.schritte[schrittNr];
+    document.getElementById('fall-fortschritt').textContent = `Fall „${f.titel}“ · Schritt ${schrittNr + 1} von ${f.schritte.length}`;
+    document.getElementById('fall-bild').textContent = f.bild;
+    document.getElementById('fall-text').textContent = s.text;
+    document.getElementById('fall-feedback').innerHTML = '';
+    const o = document.getElementById('fall-optionen'); o.innerHTML = '';
+    s.optionen.forEach(([text, richtig, erkl]) => {
+      const k = document.createElement('button'); k.type = 'button'; k.textContent = text;
+      k.addEventListener('click', () => {
+        document.getElementById('fall-feedback').innerHTML = rueck(richtig, (richtig ? '✅ ' : '❌ ') + erkl);
+        if (!richtig) return;
+        o.querySelectorAll('button').forEach((b) => (b.disabled = true));
+        const weiter = document.createElement('button'); weiter.type = 'button';
+        weiter.style.marginTop = '.8rem';
+        if (schrittNr < f.schritte.length - 1) {
+          weiter.textContent = 'Weiter →'; weiter.addEventListener('click', () => { schrittNr++; zeigeSchritt(); });
+        } else {
+          geloest.add(fallNr); faelleStand();
+          weiter.textContent = geloest.size < FAELLE.length ? '🕵️ Fall gelöst! Nächster Fall →' : '🏆 Alle Fälle gelöst!';
+          weiter.addEventListener('click', () => {
+            const offen = FAELLE.findIndex((_, j) => !geloest.has(j));
+            if (offen >= 0) starteFall(offen);
+          });
+        }
+        document.getElementById('fall-feedback').appendChild(weiter);
+      });
+      o.appendChild(k);
+    });
+  }
+  faelleStand();
+
+  // ---------- 4 Ticket-Check ----------
+  const PRUEFUNGEN = [
+    ['Was wolltest du tun?', /\b(wollte|wollten|versuchte|wollt|möchte|moechte|habe versucht|wollte ich)\b/i],
+    ['Was ist passiert? (genaue Meldung)', /\b(meldung|fehler|zeigt|kommt|steht|erscheint|geht nicht|funktioniert nicht|reagiert|lädt nicht|laedt nicht|kein|keine)\b/i],
+    ['Wo? (Raum, Gerät, Programm)', /\b(raum|edv|pc|laptop|computer|gerät|geraet|word|excel|teams|browser|edge|chrome|drucker|youtube|platz|klasse)\b/i],
+    ['Wann / seit wann?', /\b(seit|heute|gestern|um \d|uhr|stunde|montag|dienstag|mittwoch|donnerstag|freitag|morgen|vorhin|gerade|minuten)\b/i],
+    ['Was hast du schon probiert?', /\b(probiert|versucht|neu ?gestartet|neustart|neu starten|geprüft|geprueft|kontrolliert|ausgesteckt|eingesteckt|ausgeschaltet)\b/i],
+    ['Screenshot dabei?', /\b(screenshot|bildschirmfoto|foto|bild im anhang|anhang|angehängt|angehaengt)\b/i],
+  ];
+  const tText = document.getElementById('ticket-text'), tListe = document.getElementById('ticket-liste');
+  function pruefeTicket() {
+    tListe.innerHTML = '';
+    let n = 0;
+    for (const [name, re] of PRUEFUNGEN) {
+      const ja = re.test(tText.value); if (ja) n++;
+      const li = document.createElement('li'); li.textContent = name; if (ja) li.className = 'ja'; tListe.appendChild(li);
+    }
+    document.getElementById('ticket-sterne').textContent = '★'.repeat(n) + '☆'.repeat(PRUEFUNGEN.length - n) +
+      (n === PRUEFUNGEN.length ? '  Profi-Ticket! 🏆' : '');
+  }
+  tText.addEventListener('input', pruefeTicket);
+  document.getElementById('ticket-beispiel').addEventListener('click', () => { tText.value = 'HILFE!!! Geht nicht!!!'; pruefeTicket(); });
+  document.getElementById('ticket-leeren').addEventListener('click', () => { tText.value = ''; pruefeTicket(); tText.focus(); });
+  pruefeTicket();
+</script>
+</body>
+</html>
